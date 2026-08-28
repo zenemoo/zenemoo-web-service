@@ -104,9 +104,9 @@ export const ComingSoonPage: React.FC = () => {
       <div className="absolute bottom-60 right-[12%] w-2 h-2 bg-cyan-200 rounded-full animate-sparkle pointer-events-none" style={{ animationDelay: '0.8s' }} />
 
       {/* ========================================== */}
-      {/* STICKY NAVBAR AT TOP */}
+      {/* FIXED NAVBAR AT TOP (PERMANENTLY PINNED TO VIEWPORT) */}
       {/* ========================================== */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0 shadow-lg">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
           {/* Left: Circular Logo & Brand */}
           <ZenemooLogo size="md" showTagline={true} taglineText="WEB SERVICES" />
@@ -135,6 +135,9 @@ export const ComingSoonPage: React.FC = () => {
           </div>
         </div>
       </header>
+
+      {/* Spacing Offset for Fixed Header */}
+      <div className="h-[74px] shrink-0 pointer-events-none" />
 
       {/* ========================================== */}
       {/* MAIN CONTENT CONTAINER */}
