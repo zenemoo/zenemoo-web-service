@@ -1,9 +1,20 @@
+export interface SubscriptionSummary {
+  addedCount?: number;
+  skippedCount?: number;
+  reactivatedCount?: number;
+  invalidCount?: number;
+  addedEmails?: string[];
+  skippedEmails?: string[];
+  invalidEmails?: string[];
+}
+
 export interface ApiResponse<T = any> {
   success?: boolean;
   status?: string;
   service?: string;
   timestamp?: string;
   data?: T;
+  summary?: SubscriptionSummary;
   message?: string;
   error?: string;
   code?: string;
@@ -45,6 +56,7 @@ class ApiService {
           status: response.status.toString(),
           message: responseData.message || responseData.error || `Server responded with status ${response.status}`,
           code: responseData.code || `HTTP_${response.status}`,
+          summary: responseData.summary,
         };
       }
 
@@ -54,14 +66,14 @@ class ApiService {
         return {
           success: false,
           status: 'TIMEOUT',
-          message: 'Request timed out. Please try again.',
+          message: 'Unable to subscribe right now. Please try again later.',
         };
       }
 
       return {
         success: false,
         status: 'NETWORK_ERROR',
-        message: err.message || 'Unable to connect to Zenemoo backend services.',
+        message: err.message || 'Unable to subscribe right now. Please try again later.',
       };
     }
   }

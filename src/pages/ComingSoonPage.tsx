@@ -26,8 +26,9 @@ import {
 export const ComingSoonPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscriptionState, setSubscriptionState] = useState<'idle' | 'success' | 'already_subscribed'>('idle');
 
   // Strict RFC-compliant email validator
   const isValidEmail = (emailStr: string): boolean => {
@@ -38,29 +39,41 @@ export const ComingSoonPage: React.FC = () => {
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     setEmailError(null);
+    setServerError(null);
 
     const trimmedEmail = email.trim();
 
     if (!trimmedEmail) {
-      setEmailError('Email address cannot be blank.');
+      setEmailError('Please enter a valid email address.');
       return;
     }
 
     if (!isValidEmail(trimmedEmail)) {
-      setEmailError('Please enter a valid email address (e.g. name@domain.com).');
+      setEmailError('Please enter a valid email address.');
       return;
     }
 
     setIsSubmitting(true);
     try {
       const res = await apiService.subscribeNewsletter(trimmedEmail);
-      if (res.success || res.status === '200') {
-        setIsSubscribed(true);
+      
+      // Detect duplicate subscriber based on backend/database response
+      const isDuplicate = 
+        (res.summary?.skippedCount !== undefined && res.summary.skippedCount > 0) ||
+        (res.summary?.skippedEmails && res.summary.skippedEmails.length > 0) ||
+        (typeof res.message === 'string' && /already subscribed/i.test(res.message)) ||
+        res.status === '409' ||
+        res.code === 'DUPLICATE';
+
+      if (isDuplicate) {
+        setSubscriptionState('already_subscribed');
+      } else if (res.success || (res.summary?.addedCount && res.summary.addedCount > 0) || res.data?.id || res.status === '200') {
+        setSubscriptionState('success');
       } else {
-        setIsSubscribed(true);
+        setServerError(res.message || 'Unable to subscribe right now. Please try again later.');
       }
     } catch {
-      setIsSubscribed(true);
+      setServerError('Unable to subscribe right now. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -203,14 +216,28 @@ export const ComingSoonPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Form */}
-            <div className="w-full md:w-auto md:min-w-[360px]">
-              {isSubscribed ? (
-                <div className="flex items-center gap-3 p-4 bg-emerald-950/60 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs">
+            {/* Right Form / Status Display */}
+            <div className="w-full md:w-auto md:min-w-[380px]">
+              {subscriptionState === 'success' && (
+                <div className="flex items-center gap-3 p-3.5 sm:p-4 bg-emerald-950/70 border border-emerald-500/40 rounded-2xl text-emerald-300 text-xs sm:text-sm shadow-inner">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-                  <span>Thanks! You are on the early access list.</span>
+                  <div>
+                    <p className="font-semibold text-emerald-200">You're subscribed! We'll notify you when we launch.</p>
+                  </div>
                 </div>
-              ) : (
+              )}
+
+              {subscriptionState === 'already_subscribed' && (
+                <div className="flex items-start gap-3 p-3.5 sm:p-4 bg-cyan-950/70 border border-cyan-500/40 rounded-2xl text-cyan-200 text-xs sm:text-sm shadow-inner">
+                  <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <p className="font-semibold text-cyan-100">You're already subscribed!</p>
+                    <p className="text-[11px] text-slate-300">This email is already on our launch list.</p>
+                  </div>
+                </div>
+              )}
+
+              {subscriptionState === 'idle' && (
                 <form onSubmit={handleSubscribe} className="space-y-2">
                   <div className="flex flex-col sm:flex-row items-center gap-2">
                     <div className="relative w-full">
@@ -221,11 +248,12 @@ export const ComingSoonPage: React.FC = () => {
                         onChange={(e) => {
                           setEmail(e.target.value);
                           if (emailError) setEmailError(null);
+                          if (serverError) setServerError(null);
                         }}
                         placeholder="Enter your email address"
                         aria-label="Enter your email address"
                         className={`w-full bg-slate-950/90 border rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-100 focus:outline-none transition-colors ${
-                          emailError ? 'border-rose-500/80 focus:border-rose-400' : 'border-slate-800 focus:border-cyan-400'
+                          emailError || serverError ? 'border-rose-500/80 focus:border-rose-400' : 'border-slate-800 focus:border-cyan-400'
                         }`}
                       />
                     </div>
@@ -235,16 +263,24 @@ export const ComingSoonPage: React.FC = () => {
                       aria-label="Notify Me when launched"
                       className="w-full sm:w-auto shrink-0 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                     >
-                      <span>{isSubmitting ? 'Sending...' : 'Notify Me'}</span>
+                      <span>{isSubmitting ? 'Subscribing...' : 'Notify Me'}</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
 
-                  {/* Inline Validation Error */}
+                  {/* Inline Format Error Message */}
                   {emailError && (
                     <p className="text-xs text-rose-400 font-mono flex items-center gap-1.5 pt-1">
                       <AlertCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                       <span>{emailError}</span>
+                    </p>
+                  )}
+
+                  {/* Server / Network Error Message */}
+                  {serverError && (
+                    <p className="text-xs text-rose-400 font-mono flex items-center gap-1.5 pt-1">
+                      <AlertCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>{serverError}</span>
                     </p>
                   )}
                 </form>
