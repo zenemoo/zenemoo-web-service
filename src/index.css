@@ -4,14 +4,13 @@
 
 @layer base {
   html, body {
-    @apply bg-[#050813] text-slate-100 font-sans antialiased overflow-hidden select-none h-screen min-h-screen;
-    height: 100dvh;
+    @apply bg-[#050813] text-slate-100 font-sans antialiased select-none min-h-screen overflow-x-hidden;
   }
 }
 
 /* Glassmorphism & Atmospheric Utilities */
 .glass-panel-coming {
-  background: rgba(13, 19, 36, 0.55);
+  background: rgba(13, 19, 36, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
