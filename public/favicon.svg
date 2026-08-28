@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="zenemoo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#060913" />
+  <rect width="98" height="98" x="1" y="1" rx="23" stroke="url(#zenemoo-grad)" stroke-width="2" stroke-opacity="0.5" />
+  <path d="M28 30H72L42 54H72L28 78" stroke="url(#zenemoo-grad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
