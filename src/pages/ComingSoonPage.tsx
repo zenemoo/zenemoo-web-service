@@ -90,7 +90,7 @@ export const ComingSoonPage: React.FC = () => {
   ];
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden bg-[#050813] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen w-full flex flex-col justify-between bg-[#050813] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       
       {/* Background Ambient Planet Glows */}
       <div className="absolute top-1/4 -left-40 w-96 h-96 planet-orb-left rounded-full pointer-events-none opacity-60 animate-pulse-glow" />
@@ -104,9 +104,9 @@ export const ComingSoonPage: React.FC = () => {
       <div className="absolute bottom-60 right-[12%] w-2 h-2 bg-cyan-200 rounded-full animate-sparkle pointer-events-none" style={{ animationDelay: '0.8s' }} />
 
       {/* ========================================== */}
-      {/* NORMAL DOCUMENT FLOW HEADER (NO STICKY/FIXED POSITIONING) */}
+      {/* STICKY NAVBAR AT TOP */}
       {/* ========================================== */}
-      <header className="relative z-20 w-full border-b border-slate-800/80 bg-[#050813]/85 backdrop-blur-xl shrink-0">
+      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
           {/* Left: Circular Logo & Brand */}
           <ZenemooLogo size="md" showTagline={true} taglineText="WEB SERVICES" />
