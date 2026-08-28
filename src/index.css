@@ -26,12 +26,12 @@
 /* Planet Orb Atmospheric Side Glows */
 .planet-orb-left {
   background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.35) 0%, rgba(59, 130, 246, 0.2) 45%, transparent 75%);
-  filter: blur(50px);
+  filter: blur(60px);
 }
 
 .planet-orb-right {
   background: radial-gradient(circle at 70% 50%, rgba(56, 189, 248, 0.35) 0%, rgba(139, 92, 246, 0.25) 45%, transparent 75%);
-  filter: blur(50px);
+  filter: blur(60px);
 }
 
 /* Keyframe Animations */
