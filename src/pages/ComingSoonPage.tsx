@@ -104,9 +104,9 @@ export const ComingSoonPage: React.FC = () => {
       <div className="absolute bottom-60 right-[12%] w-2 h-2 bg-cyan-200 rounded-full animate-sparkle pointer-events-none" style={{ animationDelay: '0.8s' }} />
 
       {/* ========================================== */}
-      {/* FIXED / STICKY NAVBAR AT TOP */}
+      {/* NORMAL FLOW NAVBAR / HEADER (SCROLLS WITH PAGE) */}
       {/* ========================================== */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0">
+      <header className="relative z-20 w-full border-b border-slate-800/80 bg-[#050813]/85 backdrop-blur-xl shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
           {/* Left: Circular Logo & Brand */}
           <ZenemooLogo size="md" showTagline={true} taglineText="WEB SERVICES" />
@@ -137,9 +137,9 @@ export const ComingSoonPage: React.FC = () => {
       </header>
 
       {/* ========================================== */}
-      {/* MAIN CONTENT CONTAINER — SPACIOUS & RESPONSIVE */}
+      {/* MAIN CONTENT CONTAINER */}
       {/* ========================================== */}
-      <main className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 flex-1 flex flex-col items-center space-y-16 md:space-y-20 text-center">
+      <main className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14 flex-1 flex flex-col items-center space-y-16 md:space-y-20 text-center">
         
         {/* HERO SECTION */}
         <section className="space-y-6 max-w-3xl flex flex-col items-center pt-2">
@@ -251,7 +251,7 @@ export const ComingSoonPage: React.FC = () => {
           </div>
         </section>
 
-        {/* TALENT / COLLABORATION SECTION (Matching Reference graphic) */}
+        {/* TALENT / COLLABORATION SECTION */}
         <section className="w-full max-w-4xl glass-panel-coming rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-800 shadow-2xl text-left">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
             
@@ -325,7 +325,7 @@ export const ComingSoonPage: React.FC = () => {
       </main>
 
       {/* ========================================== */}
-      {/* SPACIOUS FOOTER */}
+      {/* FOOTER */}
       {/* ========================================== */}
       <footer className="relative z-20 w-full border-t border-slate-800/80 bg-[#04060E] shrink-0 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 gap-4">
