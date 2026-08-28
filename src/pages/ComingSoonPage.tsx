@@ -87,20 +87,34 @@ export const ComingSoonPage: React.FC = () => {
       <div className="absolute bottom-32 right-[12%] w-2 h-2 bg-cyan-200 rounded-full animate-sparkle pointer-events-none" style={{ animationDelay: '0.8s' }} />
 
       {/* ========================================== */}
-      {/* SEPARATE NAVBAR / HEADER */}
+      {/* STICKY NAVBAR / HEADER */}
       {/* ========================================== */}
-      <header className="relative z-20 w-full border-b border-slate-800/80 bg-[#050813]/85 backdrop-blur-xl shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
           {/* Left: Circular Logo & Brand */}
           <ZenemooLogo size="md" showTagline={true} taglineText="WEB SERVICES" />
 
-          {/* Right: Status Indicator Pill */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="text-[11px] font-semibold text-slate-200">web.zenemoo.in</span>
+          {/* Right: Contact Email & Status Pill */}
+          <div className="flex items-center gap-2.5">
+            {/* Contact Email Link */}
+            <a
+              href="mailto:contact@zenemoo.in?subject=Inquiry%20-%20Zenemoo%20Web%20Services"
+              aria-label="Email Zenemoo Web Services at contact@zenemoo.in"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 hover:border-cyan-500/50 text-xs font-mono text-cyan-300 hover:text-cyan-200 transition-all duration-200 shadow-sm backdrop-blur-md"
+            >
+              <Mail className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span className="hidden sm:inline">contact@zenemoo.in</span>
+              <span className="sm:hidden text-[11px]">Email</span>
+            </a>
+
+            {/* Status Pill */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="text-[11px] font-semibold text-slate-200 hidden md:inline">web.zenemoo.in</span>
+            </div>
           </div>
         </div>
       </header>
