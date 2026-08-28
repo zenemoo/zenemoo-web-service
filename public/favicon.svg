@@ -1,12 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
   <defs>
-    <linearGradient id="zenemoo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="z-ribbon" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00F2FE" />
-      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="45%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="z-sparkle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
       <stop offset="100%" stop-color="#8B5CF6" />
     </linearGradient>
   </defs>
-  <rect width="100" height="100" rx="24" fill="#060913" />
-  <rect width="98" height="98" x="1" y="1" rx="23" stroke="url(#zenemoo-grad)" stroke-width="2" stroke-opacity="0.5" />
-  <path d="M28 30H72L42 54H72L28 78" stroke="url(#zenemoo-grad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Background container -->
+  <rect width="120" height="120" rx="28" fill="#050813" />
+  <rect width="118" height="118" x="1" y="1" rx="27" stroke="url(#z-ribbon)" stroke-opacity="0.3" stroke-width="1.5" />
+
+  <!-- Main Ribbon Z Path -->
+  <path d="M 38 32 C 48 30 75 28 80 34 C 84 38 68 54 52 70 C 44 78 40 82 50 82 C 60 82 72 82 78 82" 
+        stroke="url(#z-ribbon)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Purple Accent Dot -->
+  <circle cx="75" cy="65" r="7" fill="#8B5CF6" />
+
+  <!-- Top-Right Sparkle Star 1 -->
+  <path d="M 88 18 C 88 23 93 23 93 23 C 93 23 88 23 88 28 C 88 23 83 23 83 23 C 83 23 88 23 88 18 Z" fill="url(#z-sparkle)" />
+  <!-- Top-Right Sparkle Star 2 -->
+  <path d="M 98 29 C 98 32 101 32 101 32 C 101 32 98 32 98 35 C 98 32 95 32 95 32 C 95 32 98 32 98 29 Z" fill="#8B5CF6" />
 </svg>
