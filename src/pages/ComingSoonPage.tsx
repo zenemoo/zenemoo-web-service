@@ -11,6 +11,8 @@ import {
   Lock, 
   ArrowRight, 
   CheckCircle2,
+  AlertCircle,
+  Users,
   Linkedin,
   Twitter,
   Instagram,
@@ -19,31 +21,42 @@ import {
 
 export const ComingSoonPage: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  // Strict email format validator (handles name@, name.com, @example.com, etc.)
+  const isValidEmail = (emailStr: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailStr.trim());
+  };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setToastMsg('Please enter a valid email address.');
-      setTimeout(() => setToastMsg(null), 3500);
+    setEmailError(null);
+
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      setEmailError('Email address cannot be blank.');
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      setEmailError('Please enter a valid email address (e.g. name@domain.com).');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const res = await apiService.subscribeNewsletter(email);
+      const res = await apiService.subscribeNewsletter(trimmedEmail);
       if (res.success || res.status === '200') {
         setIsSubscribed(true);
-        setToastMsg('Subscribed! We will notify you when we launch.');
       } else {
         setIsSubscribed(true);
-        setToastMsg(res.message || 'Subscription registered!');
       }
     } catch {
       setIsSubscribed(true);
-      setToastMsg('Subscription registered!');
     } finally {
       setIsSubmitting(false);
     }
@@ -87,15 +100,15 @@ export const ComingSoonPage: React.FC = () => {
       <div className="absolute bottom-32 right-[12%] w-2 h-2 bg-cyan-200 rounded-full animate-sparkle pointer-events-none" style={{ animationDelay: '0.8s' }} />
 
       {/* ========================================== */}
-      {/* STICKY NAVBAR / HEADER */}
+      {/* FIXED / STICKY NAVBAR AT TOP */}
       {/* ========================================== */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-slate-800/80 bg-[#050813]/95 backdrop-blur-xl shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-3">
           {/* Left: Circular Logo & Brand */}
           <ZenemooLogo size="md" showTagline={true} taglineText="WEB SERVICES" />
 
           {/* Right: Contact Email & Status Pill */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Contact Email Link */}
             <a
               href="mailto:contact@zenemoo.in?subject=Inquiry%20-%20Zenemoo%20Web%20Services"
@@ -120,14 +133,14 @@ export const ComingSoonPage: React.FC = () => {
       </header>
 
       {/* ========================================== */}
-      {/* MAIN HERO & CONTENT AREA */}
+      {/* MAIN HERO & CONTENT AREA (WITH TOP MARGIN TO PREVENT NAVBAR OVERLAP) */}
       {/* ========================================== */}
-      <main className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-evenly px-4 sm:px-6 lg:px-8 py-6 my-auto text-center space-y-4 lg:space-y-2">
+      <main className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-evenly px-4 sm:px-6 lg:px-8 pt-20 pb-4 sm:pt-24 sm:pb-6 my-auto text-center space-y-4 lg:space-y-2">
         
         {/* Top Hero Pill Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-semibold font-mono uppercase tracking-wider backdrop-blur-md shadow-sm">
           <Rocket className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-          <span>SOMETHING AMAZING IS ON THE WAY</span>
+          <span>PREMIUM WEBSITES. ACCESSIBLE PRICING.</span>
         </div>
 
         {/* Hero Title & Subtitle */}
@@ -136,8 +149,8 @@ export const ComingSoonPage: React.FC = () => {
             Coming <span className="text-gradient-hero">Soon</span>
           </h1>
 
-          <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-xl mx-auto font-normal leading-relaxed">
-            We are building a powerful platform to help you <span className="text-cyan-400 font-semibold">buy</span>, <span className="text-cyan-400 font-semibold">create</span>, and <span className="text-purple-400 font-semibold">launch</span> stunning websites with ease.
+          <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
+            We're building beautiful, high-quality websites at practical prices, making professional web solutions accessible to <span className="text-cyan-400 font-semibold">businesses</span>, <span className="text-cyan-400 font-semibold">startups</span>, <span className="text-cyan-400 font-semibold">students</span>, and <span className="text-purple-400 font-semibold">growing teams</span>.
           </p>
 
           {/* Decorative Divider Line */}
@@ -162,7 +175,7 @@ export const ComingSoonPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Notification Panel */}
+        {/* Notification & Early Access Form Panel */}
         <div className="w-full max-w-xl glass-panel-coming rounded-2xl p-3.5 sm:p-4 border border-slate-800 shadow-xl relative overflow-hidden">
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
             {/* Bell Icon */}
@@ -180,31 +193,45 @@ export const ComingSoonPage: React.FC = () => {
               {isSubscribed ? (
                 <div className="flex items-center gap-2 p-2 bg-emerald-950/60 border border-emerald-500/40 rounded-lg text-emerald-300 text-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>{toastMsg || 'Thanks! You are on the early access list.'}</span>
+                  <span>Thanks! You are on the early access list.</span>
                 </div>
               ) : (
-                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center gap-2 pt-1">
-                  <div className="relative w-full">
-                    <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
-                      aria-label="Enter your email address"
-                      className="w-full bg-slate-950/90 border border-slate-800 focus:border-cyan-400 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-100 focus:outline-none transition-colors"
-                    />
+                <form onSubmit={handleSubscribe} className="flex flex-col gap-1.5 pt-1">
+                  <div className="flex flex-col sm:flex-row items-center gap-2">
+                    <div className="relative w-full">
+                      <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (emailError) setEmailError(null);
+                        }}
+                        placeholder="Enter your email address"
+                        aria-label="Enter your email address"
+                        className={`w-full bg-slate-950/90 border rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-100 focus:outline-none transition-colors ${
+                          emailError ? 'border-rose-500/80 focus:border-rose-400' : 'border-slate-800 focus:border-cyan-400'
+                        }`}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      aria-label="Notify Me when launched"
+                      className="w-full sm:w-auto shrink-0 px-4 py-1.5 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-slate-950 font-bold text-xs shadow-md shadow-cyan-500/20 transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    >
+                      <span>{isSubmitting ? 'Sending...' : 'Notify Me'}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    aria-label="Notify Me when launched"
-                    className="w-full sm:w-auto shrink-0 px-4 py-1.5 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-slate-950 font-bold text-xs shadow-md shadow-cyan-500/20 transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
-                  >
-                    <span>{isSubmitting ? 'Sending...' : 'Notify Me'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+
+                  {/* Inline Error Message */}
+                  {emailError && (
+                    <p className="text-[11px] text-rose-400 font-mono flex items-center gap-1 justify-center sm:justify-start">
+                      <AlertCircle className="w-3 h-3 text-rose-400 shrink-0" />
+                      <span>{emailError}</span>
+                    </p>
+                  )}
                 </form>
               )}
 
@@ -214,6 +241,12 @@ export const ComingSoonPage: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Talent / Contributor Opportunity Note */}
+        <div className="w-full max-w-xl p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs text-slate-300 flex items-center justify-center gap-2">
+          <Users className="w-4 h-4 text-purple-400 shrink-0" />
+          <span>Have the skills to build with us? We're creating opportunities for talented people to contribute to upcoming projects.</span>
         </div>
 
         {/* Brand Statement */}
